@@ -6,6 +6,7 @@ const app = express();
 
 const foundryRoutes = require("./routes/foundry");
 const weaponsRoutes = require("./routes/weapons");
+const armorsRoutes = require("./routes/armor");
 
 //--------------------
 
@@ -30,6 +31,7 @@ app.use(express.json());
 
 app.use('/foundries', foundryRoutes);
 app.use('/weapons', weaponsRoutes);
+app.use('/armors', armorsRoutes);
 
 //Inicio del servidor
 app.listen(process.env.PORT, () => {

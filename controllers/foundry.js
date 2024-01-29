@@ -24,6 +24,7 @@ const addFoundry = async (req, res) => {
     
     //Validaciones
     //Descripcion predefinida si no se ha introducido una
+
     if(foundry.description == null){
         foundry.description = `${foundry.location} foundry`;
     }
@@ -54,9 +55,14 @@ const deleteFoundry = async (req, res) => {
     const id = req.params.id;
     try{
         let delFoundry = await Foundry.findByIdAndDelete({_id: id})
-        res.status(201).json(delFoundry)
+        //los metodos findByIdAndLoQueSea devuelven null si no encuentran la id
+        if(delFoundry != null){
+            res.status(201).json(delFoundry)
+        }else{
+            res.status(404).json({message: "Foundry not found, try a valid ID"})
+        }
     }catch (error) {
-        res.status(404).json({message: "Foundry not found, try a valid ID"})
+        res.status(500).json({message: "Server error"})
     }
 }
 

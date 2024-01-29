@@ -54,7 +54,6 @@ router
     check('firstPerk','Perks must be text').not().isNumeric(),
     check('secondPerk','Perks must be text').not().isNumeric(),
     check('foundryPerk','Perks must be text').not().isNumeric(),
-    check('sunset','Sunset must be boolean').isBoolean(),
     validateFields
 ], editWeapon)
 .delete([

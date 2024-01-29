@@ -26,7 +26,7 @@ const addArmor = async(req, res) => {
     const newArmor = new Armor(armor);
     try{
         await newArmor.save()
-        res.status(201),json(newArmor);
+        res.status(201).json(newArmor);
     }catch(error){
         res.status(500).json({message: error});
     }

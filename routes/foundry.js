@@ -3,6 +3,7 @@ const router = express.Router();
 const { check } = require("express-validator");
 const { getFoundries, addFoundry, getFoundryById, editFoundry, deleteFoundry } = require("../controllers/foundry");
 const { validateFields } = require("../middleware/validate-fields");
+const { existFoundry } = require("../helpers/foundry");
 
 router
 .route('/')
@@ -10,6 +11,8 @@ router
 .post([
     check('name','Name is required').notEmpty(),
     check('name','Name must be text').not().isNumeric(),
+    //Esta comprobación de repetición solo existe en foundry debido a que el usuario puede obtener y guardar varios ejemplares de un arma o armadura
+    check("name").custom(existFoundry),
     check('location', 'Location must be text').not().isNumeric(),
     check('location', 'Location is required').notEmpty(),
     validateFields
