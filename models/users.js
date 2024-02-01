@@ -6,7 +6,8 @@ const UserSchema = new Schema({
     email: {type: String, unique: true},
     password: String,
     login: {type: String, unique: true},
-    role: String
+    role: String,
+    enable: Boolean
 })
 
 module.exports = mongoose.model('User', UserSchema);
