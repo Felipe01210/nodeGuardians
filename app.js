@@ -8,6 +8,7 @@ const foundryRoutes = require("./routes/foundry");
 const weaponsRoutes = require("./routes/weapons");
 const armorsRoutes = require("./routes/armor");
 const usersRoutes = require("./routes/users");
+const authRoutes = require("./routes/auth");
 
 //--------------------
 
@@ -34,6 +35,7 @@ app.use('/foundries', foundryRoutes);
 app.use('/weapons', weaponsRoutes);
 app.use('/armors', armorsRoutes);
 app.use('/users', usersRoutes);
+app.use('/auth', authRoutes);
 
 //Inicio del servidor
 app.listen(process.env.PORT, () => {
