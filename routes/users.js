@@ -28,6 +28,8 @@ router
     validateFields
 ], getUserByName)
 .put([
+    validateJWT,
+    hasRol("ADMIN","USER"),
     check('name','Name is required').notEmpty(),
     check('name','Name must be text').not().isNumeric(),
     check('login','Username is required').notEmpty(),

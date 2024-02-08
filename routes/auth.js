@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { check } = require("express-validator");
 const { validateFields } = require("../middleware/validate-fields");
-const { authUser } = require("../controllers/auth");
+const { authUser, renewToken } = require("../controllers/auth");
+const { validateJWT } = require("../middleware/validate-jwt");
 
 router
 .route('/login')
@@ -15,5 +16,11 @@ router
     check('password',"Min length: 8, 1 lower letter, 1 upper letter, 1 number and 1 special character").matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,}$/),
     validateFields
 ], authUser)
+
+router
+.route('/renew')
+.get([
+    validateJWT
+], renewToken)
 
 module.exports = router

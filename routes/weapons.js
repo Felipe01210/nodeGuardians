@@ -3,11 +3,15 @@ const router = express.Router();
 const { check } = require("express-validator");
 const { getWeapons, getWeaponsById, addWeapon, editWeapon, deleteWeapon} = require("../controllers/weapon");
 const { validateFields } = require("../middleware/validate-fields");
+const { validateJWT } = require("../middleware/validate-jwt");
+const { hasRol } = require("../middleware/validate-customs");
 
 router
 .route('/')
 .get(getWeapons)
 .post([
+    validateJWT,
+    hasRol("ADMIN"),
     check('name','Name is required').notEmpty(),
     check('name','Name must be text').not().isNumeric(),
     check('slot','Slot is required').notEmpty(),
@@ -31,6 +35,8 @@ router
     validateFields
 ], getWeaponsById)
 .put([
+    validateJWT,
+    hasRol("ADMIN"),
     check('id',"Id must be mongoID").isMongoId(),
     check('name','Name is required, fill it or try PATCH').notEmpty(),
     check('name','Name must be text').not().isNumeric(),
@@ -48,6 +54,8 @@ router
     validateFields
 ], editWeapon)
 .patch([
+    validateJWT,
+    hasRol("ADMIN"),
     check('id',"Id must be mongoID").isMongoId(),
     check('name','Name must be text').not().isNumeric(),
     check('slot','Slot must be text').not().isNumeric(),
@@ -57,6 +65,8 @@ router
     validateFields
 ], editWeapon)
 .delete([
+    validateJWT,
+    hasRol("ADMIN"),
     check('id',"Id must be mongoID").isMongoId(),
     validateFields
 ], deleteWeapon)

@@ -36,4 +36,16 @@ const authUser = async(req, res) => {
     }
 }
 
-module.exports = { authUser }
+const renewToken = async(req, res) => {
+    const user = req.user;
+    const payload = {uid : req.user.uid};
+    const token = jwt.sign(payload, process.env.SECRET, {expiresIn: '1h'})
+
+    res.status(200).json({
+        message: "Token renovated",
+        user,
+        token
+    })
+}
+
+module.exports = { authUser, renewToken }
