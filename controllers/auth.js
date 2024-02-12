@@ -36,16 +36,45 @@ const authUser = async(req, res) => {
     }
 }
 
+const authUserEmail = async(req, res) => {
+
+    const {email, password} = req.body;
+
+    try{
+        const user = await User.findOne({email: email})
+        if(!user){
+            res.status(400).json({message: "Email error"})
+        }
+        if(!crypt.compareSync(password, user.password)){
+            res.status(400).json({message: "Password error"})
+        }
+        if(!user.enable){
+            res.status(400).json({message: "Enable error"})
+        }else{
+
+            //Generar jwt
+            const payload = { uid: user.id };
+            const token = jwt.sign(payload, process.env.SECRET, {expiresIn: '1h'})
+
+            res.status(200).json({
+                user,
+                token
+            })
+        }
+    }catch(error){
+        res.status(400).json({message: "User not found"});
+    }
+}
+
 const renewToken = async(req, res) => {
     const user = req.user;
-    const payload = {uid : req.user.uid};
+    const payload = {uid : user.id};
     const token = jwt.sign(payload, process.env.SECRET, {expiresIn: '1h'})
 
     res.status(200).json({
-        message: "Token renovated",
         user,
         token
     })
 }
 
-module.exports = { authUser, renewToken }
+module.exports = { authUser, renewToken, authUserEmail }
